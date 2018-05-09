@@ -1,6 +1,6 @@
 defmodule Bakery do
   @moduledoc """
-  Documentation for Bakery.
+  Documentation for DiningPhilosophers.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule Bakery do
 
   ## Examples
 
-      iex> Bakery.hello
+      iex> DiningPhilosophers.hello
       :world
 
   """
