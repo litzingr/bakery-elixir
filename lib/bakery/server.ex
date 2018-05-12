@@ -1,11 +1,24 @@
 defmodule Server do
 
-  def serving(server_number) do
-    receive do
-      {:serve, customer, order} ->
-        fibo = fib(order)
-        IO.puts("Server #{server_number} served customer #{customer} the fib of #{order} which is #{fibo}")
+  def hire_servers(manager, number_of_servers) do
+    IO.puts("making servers")
+    servers = (1..number_of_servers)
+      |> Enum.map(fn (n) -> spawn(Server, :free, [self(), manager, n]) end)
+    servers
+  end
 
+  def free(server_number, manager, n) do
+    IO.inspect("server initiated #{n}")
+    send(manager, {:server_available, self()})
+    serve(server_number,manager,n)
+  end
+
+  def serve(server_number, manager, n) do
+    receive do
+      {:order, customer, order} ->
+        fibo = fib(order)
+        send(customer, {:receive, fibo})
+        free(server_number, manager, n)
     end
   end
 
