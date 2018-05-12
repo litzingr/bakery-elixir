@@ -7,7 +7,7 @@ defmodule Customer do
 
   def startup(customer_number, manager,n) do
       IO.inspect("Customer initiated #{n}")
-      send(manager, {:customer_waiting, self()})
+      send(manager, {:customer_waiting, self(), n})
       ordering(customer_number, manager, n)
   end
 
@@ -17,6 +17,9 @@ defmodule Customer do
         fib = Randomize.random(13)
         IO.puts("Customer #{n} is ordering #{fib}")
         send(pid, {:order, self(), fib})
+      {:wait, pid} ->
+        :timer.sleep(50)
+        send(manager, {:customer_waiting, self(), n})
       {:receive, answer} ->
         IO.puts("Customer #{n} got the answer #{answer}")
         sleep(customer_number, manager, n)
@@ -26,9 +29,8 @@ defmodule Customer do
 
   def sleep(customer_number, manager, n) do
     IO.inspect("Customer initiated #{n}")
-
-    :timer.sleep(Randomize.random(10))
-    send(manager, {:customer_waiting, self()})
+    :timer.sleep(Randomize.random(5000))
+    send(manager, {:customer_waiting, self(), n})
     ordering(customer_number, manager, n)
   end
 

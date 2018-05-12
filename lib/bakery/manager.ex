@@ -9,14 +9,13 @@ defmodule Manager do
 
   def run_bakery(pid, available_servers) do
       receive do
-        {:customer_waiting, from} ->
+        {:customer_waiting, from, n} ->
           server = List.first(available_servers)
           if server != nil do
             send(from, {:order, server})
             available_servers = List.delete_at(available_servers, 0)
           else
-            :timer.sleep(500)
-            send(pid, {:customer_waiting, from})
+            send(from, {:wait, self()})
           end
         {:server_available, from} ->
           IO.puts("new server is available")

@@ -2,6 +2,12 @@
 Lambert's Bakery Algorithm in Elixir for class CSCI 4409 at UMN Morris
 
 
+To run (in root directory):
+iex -S mix
+Manager.run(10,5)
+
+(10 customers, 5 servers)
+
 ## Assignment outline:
 
 For this problem set we're going to implement a version of Lesley Lambort's Bakery Algorithm in Elixir. The model Lamport based his algorithm on was that of a bakery where customers take a numbered ticket when they enter, and staff call out the next number when they're ready to serve a new customer. Here, however, I recommend modifying that model somewhat when doing it in Elixir. We could explicitly model the ticket machine, the “now serving” sign, and the free servers queue as separate, but I think it would be more "Elixir-y" if we bring all those things together and have a single process that manages all three together, accepting messages like:
